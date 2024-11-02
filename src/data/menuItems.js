@@ -2,7 +2,7 @@ import Home from '../pages/Home';
 import Lab1 from '../pages/Lab1';
 import Lab2 from '../pages/Lab2';
 import Lab3 from '../pages/Lab3';
-
+import Lab4Add from '../pages/Lab4Add';
 
 export const menuItems = [
   {
@@ -32,5 +32,12 @@ export const menuItems = [
     url: "/lab3",  
     urlPattern: "/lab3",
     element: <Lab3 />,
+  },
+  {
+    id: 6,
+    label: "Add Car",
+    url: "/lab4/add",
+    urlPattern: "/lab4/add",
+    element: <Lab4Add />,
   }
 ];
