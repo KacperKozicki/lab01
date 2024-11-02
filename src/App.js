@@ -1,17 +1,18 @@
 import React from 'react';
-import { data } from './module-data'; // Import tablicy danych
-import CarProfile from './CarProfile'; // Import komponentu CarProfile
+import { Routes, Route } from 'react-router-dom';
+import { menuItems } from './data/menuItems';
+import RootLayout from './layouts/RootLayout';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Spis samochodów</h1>
-      {/* wyświetl dla każdego: */}
-      {data.map(car => (
-        <CarProfile key={car.id} car={car} />
-      ))}
-    </div>
+    <RootLayout>
+      <Routes>
+        {menuItems.map((item) => (
+          <Route key={item.id} path={item.urlPattern} element={<item.element.type />} />
+        ))}
+      </Routes>
+    </RootLayout>
   );
-}
+};
 
 export default App;
