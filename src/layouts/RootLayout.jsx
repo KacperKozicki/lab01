@@ -1,18 +1,21 @@
-// src/layouts/RootLayout.jsx
 import React from 'react';
 import NavBarMenu from '../components/NavBarMenu';
 import Footer from '../components/Footer';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RootLayout = ({ items, children }) => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-base-200 text-base-content">
+      {/* Navbar */}
       <NavBarMenu items={items} />
-      <main className="container my-4">
+      
+      {/* Main Content Area */}
+      <main className="flex-grow container mx-auto px-4 py-8">
         {children}
       </main>
+
+      {/* Footer */}
       <Footer />
-    </>
+    </div>
   );
 };
 

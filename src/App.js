@@ -4,7 +4,7 @@ import { menuItems } from './data/menuItems';
 import RootLayout from './layouts/RootLayout';
 import AppContext from './data/AppContext';
 import AppReducer from './data/AppReducer'; // Assuming this is the path
-
+import './index.css';
 import { data } from './data/module-data';
 
 const App = () => {

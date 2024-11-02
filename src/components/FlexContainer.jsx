@@ -1,66 +1,71 @@
-// import React, { useReducer } from 'react';
-// import '../styles/FlexContainer.css'; // Import stylów dla FlexContainer
-// import AppReducer from '../data/AppReducer';
-// import CarTile from './CarTile'; // Import komponentu CarTile
-
-// function FlexContainer({ data }) {
-//     // Używamy useReducer z AppReducer i przekazujemy dane jako stan początkowy
-//     const [items, dispatch] = useReducer(AppReducer, data);
-
-//     return (
-//         <div className="flex-container">
-//             {items.map(item => (
-//                 <CarTile
-//                     key={item.id}
-//                     car={item} // Przekazujemy dane samochodu do CarTile
-//                     dispatch={dispatch} // Przekazujemy dispatch
-//                 />
-//             ))}
-//         </div>
-//     );
-// }
-
-// export default FlexContainer;
 import React, { useContext, useState } from 'react';
-import '../styles/FlexContainer.css';
 import AppContext from '../data/AppContext';
-import CarTile from './CarTile';
+import CarProfile from './CarProfile';
 import Lab4Add from '../pages/Lab4Add';
 import Lab4Edit from '../pages/Lab4Edit';
 
 function FlexContainer() {
-    const { items } = useContext(AppContext);
+    const { items, dispatch } = useContext(AppContext);
     const [showAddForm, setShowAddForm] = useState(false);
-    const [itemToEdit, setItemToEdit] = useState(null); // State for the item to edit
+    const [itemToEdit, setItemToEdit] = useState(null);
 
     const toggleAddForm = () => {
         setShowAddForm(!showAddForm);
     };
 
     const handleEditClick = (item) => {
-        setItemToEdit(item); // Set the item to be edited
+        setItemToEdit(item);
     };
 
     const closeEditForm = () => {
-        setItemToEdit(null); // Reset the item to edit when done
+        setItemToEdit(null);
     };
 
     return (
-        <div className="flex-container">
-            <button onClick={toggleAddForm} className="add-button">
-                {showAddForm ? 'Cancel' : 'Add New Car'}
-            </button>
-            
-            {showAddForm && <Lab4Add onClose={toggleAddForm} />}
-            {itemToEdit && <Lab4Edit itemToEdit={itemToEdit} onClose={closeEditForm} />}
+        <div className="flex-container relative">
+            <button onClick={toggleAddForm} className="btn btn-primary mb-4">Dodaj nowy</button>
 
-            {items.map(item => (
-                <CarTile
-                    key={item.id}
-                    car={item}
-                    onEditClick={() => handleEditClick(item)} // Pass edit handler to CarTile
-                />
-            ))}
+            {/* Add Modal */}
+            {showAddForm && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="modal-box custom-modal bg-base-200 rounded-xl shadow-lg p-6 max-w-lg w-full mx-4">
+                        <button 
+                            className="btn btn-sm btn-circle absolute right-4 top-4" 
+                            onClick={toggleAddForm}
+                        >
+                            ✕
+                        </button>
+                        <Lab4Add onClose={toggleAddForm} />
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Modal */}
+            {itemToEdit && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="modal-box custom-modal bg-base-200 rounded-xl shadow-lg p-6 max-w-lg w-full mx-4">
+                        <button 
+                            className="btn btn-sm btn-circle absolute right-4 top-4" 
+                            onClick={closeEditForm}
+                        >
+                            ✕
+                        </button>
+                        <Lab4Edit itemToEdit={itemToEdit} onClose={closeEditForm} />
+                    </div>
+                </div>
+            )}
+
+            {/* Car items displayed as CarProfile components */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {items.map(item => (
+                    <CarProfile
+                        key={item.id}
+                        car={item}
+                        dispatch={dispatch}
+                        onEditClick={() => handleEditClick(item)}
+                    />
+                ))}
+            </div>
         </div>
     );
 }

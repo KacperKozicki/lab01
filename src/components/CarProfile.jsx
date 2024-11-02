@@ -1,146 +1,86 @@
-// import React, { useState } from 'react';
-// import RatingBar from './RatingBar';
-// import '../styles/CarProfile.css';
-
-// const CarProfile = ({ car, dispatch }) => {
-//   const { id, car: carBrand, registration, year, color, engine, price, distance, seats, fuel, transmission, image, rating } = car;
-
-//   const [localRating, setLocalRating] = useState(rating || 0);  // Ustawienie lokalnego ratingu
-
-//   // Funkcja obsługi dla Rate
-//   const handleRate = () => {
-//     const newRating = localRating === 10 ? 0 : localRating + 1;
-//     setLocalRating(newRating);  // Zaktualizuj lokalny stan
-//     dispatch({
-//       type: "rate",
-//       id: id,
-//       rating: newRating  // Przekazujemy nową wartość rating do Reducera
-//     });
-//   };
-
-//   const handleDelete = () => {
-//     dispatch({
-//       type: "delete",
-//       id: id
-//     });
-//   };
-
-//   const handleEdit = () => {
-//     dispatch({
-//       type: "edit",
-//       id: id
-//     });
-//   };
-
-//   return (
-//     <div className="car-profile">
-//       <div className="car-profile-header">
-//         <div className="car-rating">
-//           <span className="star">⭐</span>
-//           <span>{localRating}</span>  {/* Wyświetlamy lokalny rating */}
-//         </div>
-//         <span className="availability">Available now</span>
-//         <span className="distance">{distance}m</span>
-//       </div>
-
-//       <div className="car-profile-content">
-//         <img className="car-image" src={image} alt={`${carBrand}`} />
-//         <div className="car-details">
-//           <h3>{carBrand}</h3>
-//           <h4>{registration}</h4>
-//           <p>{`${engine}, ${year}, ${color}`}</p>
-//           <p className="price">${price} / hour</p>
-
-//           <div className="car-icons">
-//             <span title="Manual" className="icon">⚙️{transmission}</span>
-//             <span title="Diesel" className="icon">⛽{fuel}</span>
-//             <span title="Seats" className="icon">👤 {seats}</span>
-//           </div>
-
-//           {/* Przycisk obsługujący Rate */}
-//           <div className="car-actions">
-//             <button onClick={handleEdit}>Edit</button>
-//             <button onClick={handleDelete}>Delete</button>
-//             <button onClick={handleRate}>Rate</button>
-//           </div>
-
-//           {/* Pasek gwiazdek */}
-//           <RatingBar rate={localRating} />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CarProfile;
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RatingBar from './RatingBar';
-import '../styles/CarProfile.css';
 
-const CarProfile = ({ car, dispatch }) => {
+const CarProfile = ({ car, dispatch, onEditClick }) => {
+  const navigate = useNavigate();
   const { id, car: carBrand, registration, year, color, engine, price, distance, seats, fuel, transmission, image, rating } = car;
 
-  const [localRating, setLocalRating] = useState(rating || 0);  // Ustawienie lokalnego ratingu
+  const [localRating, setLocalRating] = useState(rating || 0);
 
-  // Funkcja obsługi dla Rate
-  const handleRate = () => {
+  const handleRate = (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking "Rate"
     const newRating = localRating === 10 ? 0 : localRating + 1;
-    setLocalRating(newRating);  // Zaktualizuj lokalny stan
+    setLocalRating(newRating);
     dispatch({
       type: "rate",
-      id: id,
-      rating: newRating  // Przekazujemy nową wartość rating do Reducera
+      id,
+      rating: newRating,
     });
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e) => {
+    e.stopPropagation(); // Prevent navigation when clicking "Delete"
     dispatch({
       type: "delete",
-      id: id
+      id,
     });
   };
 
-  const handleEdit = () => {
-    dispatch({
-      type: "edit",
-      id: id
-    });
+  const handleCardClick = () => {
+    navigate(`/lab2/${id}`);
   };
 
   return (
-    <div className="car-profile">
-      <div className="car-profile-header">
-        <div className="car-rating">
-          <span className="star">⭐</span>
-          <span>{localRating}</span>  {/* Wyświetlamy lokalny rating */}
+    <div
+      onClick={handleCardClick}
+      className="card bg-base-200 shadow-lg rounded-lg overflow-hidden max-w-sm mx-auto transform transition duration-200 hover:scale-105 cursor-pointer"
+    >
+      {/* Header Section */}
+      <div className="flex justify-between items-center p-4 border-b border-gray-700">
+        <div className="flex items-center space-x-1">
+          <span className="text-yellow-400 text-xl">⭐</span>
+          <span className="font-semibold text-lg">{localRating}</span>
         </div>
-        <span className="availability">Available now</span>
-        <span className="distance">{distance}m</span>
+        <span className="badge badge-success">Available now</span>
+        <span className="text-sm text-gray-400">{distance}m</span>
       </div>
 
-      <div className="car-profile-content">
-        <img className="car-image" src={image} alt={`${carBrand}`} />
-        <div className="car-details">
-          <h3>{carBrand}</h3>
-          <h4>{registration}</h4>
-          <p>{`${engine}, ${year}, ${color}`}</p>
-          <p className="price">${price} / hour</p>
+      {/* Content Section */}
+      <div className="p-4">
+        <img className="w-full h-48 object-cover rounded-md mb-4" src={image} alt={carBrand} />
+        <div className="space-y-2">
+          <h3 className="text-2xl font-bold text-primary">{carBrand}</h3>
+          <h4 className="text-md font-medium text-gray-300">{registration}</h4>
+          <p className="text-sm text-gray-400">{`${engine}, ${year}, ${color}`}</p>
+          <p className="text-lg font-bold text-secondary">${price} / hour</p>
+        </div>
 
-          <div className="car-icons">
-            <span title="Manual" className="icon">⚙️{transmission}</span>
-            <span title="Diesel" className="icon">⛽{fuel}</span>
-            <span title="Seats" className="icon">👤 {seats}</span>
-          </div>
+        {/* Icons Section */}
+        <div className="flex items-center space-x-4 mt-4">
+          <span title="Transmission" className="flex items-center space-x-1">
+            <span className="text-lg">⚙️</span>
+            <span>{transmission}</span>
+          </span>
+          <span title="Fuel" className="flex items-center space-x-1">
+            <span className="text-lg">⛽</span>
+            <span>{fuel}</span>
+          </span>
+          <span title="Seats" className="flex items-center space-x-1">
+            <span className="text-lg">👤</span>
+            <span>{seats}</span>
+          </span>
+        </div>
 
-          {/* Przycisk obsługujący Rate */}
-          <div className="car-actions">
-            <button onClick={handleEdit}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={handleRate}>Rate</button>
-          </div>
+        {/* Action Buttons */}
+        <div className="flex space-x-2 mt-6">
+          <button onClick={(e) => { e.stopPropagation(); onEditClick(); }} className="btn btn-sm btn-outline btn-primary">Edytuj</button>
+          <button onClick={handleDelete} className="btn btn-sm btn-outline btn-error">Usuń</button>
+          <button onClick={handleRate} className="btn btn-sm btn-secondary">Oceń</button>
+        </div>
 
-          {/* Pasek gwiazdek */}
+        {/* Rating Bar */}
+        <div className="mt-4">
           <RatingBar rate={localRating} />
         </div>
       </div>

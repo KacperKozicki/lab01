@@ -1,26 +1,41 @@
 import React from 'react';
-import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { menuItems } from '../data/menuItems';
-import { Navbar, Container } from 'react-bootstrap';
 
 const NavBarMenu = () => {
   return (
-    <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to="/">My App</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+    <div className="navbar bg-base-200 shadow-md">
+      <div className="container mx-auto flex justify-between items-center px-4">
+        {/* Brand Logo */}
+        <div className="navbar-start">
+          <Link to="/" className="text-xl font-bold text-primary">
+            My App
+          </Link>
+        </div>
+
+        {/* Toggle button for mobile view */}
+        <div className="navbar-end lg:hidden">
+          <button className="btn btn-ghost btn-circle" onClick={() => document.getElementById('navbar-menu').classList.toggle('hidden')}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Menu Links */}
+        <div className="navbar-center hidden lg:flex" id="navbar-menu">
+          <ul className="menu menu-horizontal p-0 space-x-4">
             {menuItems.map((item) => (
-              <Nav.Link as={Link} to={item.url} key={item.id}>
-                {item.label}
-              </Nav.Link>
+              <li key={item.id}>
+                <Link to={item.url} className="text-base-content hover:text-primary">
+                  {item.label}
+                </Link>
+              </li>
             ))}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 };
 
