@@ -33,7 +33,7 @@ const CarProfile = ({ car, dispatch, onEditClick }) => {
 
   return (
     <div
-      onClick={handleCardClick}
+      //onClick={handleCardClick}
       className="card bg-base-200 shadow-lg rounded-lg overflow-hidden max-w-sm mx-auto transform transition duration-200 hover:scale-105 cursor-pointer"
     >
       {/* Header Section */}

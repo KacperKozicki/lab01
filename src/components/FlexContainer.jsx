@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
-import AppContext from '../data/AppContext';
+import React, { useState } from 'react';
+import { useData, useDispatch } from '../hooks/AppHooks';
 import CarProfile from './CarProfile';
 import Lab4Add from '../pages/Lab4Add';
 import Lab4Edit from '../pages/Lab4Edit';
-
 function FlexContainer() {
-    const { items, dispatch } = useContext(AppContext);
+    // const { items, dispatch } = useContext(AppContext);
+    const items = useData();
+    const dispatch = useDispatch();
     const [showAddForm, setShowAddForm] = useState(false);
     const [itemToEdit, setItemToEdit] = useState(null);
 
